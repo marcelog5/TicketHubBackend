@@ -3,14 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34728.123
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{98D0E6C5-9E86-4B25-828C-4BE9350A499D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{98D0E6C5-9E86-4B25-828C-4BE9350A499D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{5C51C622-C601-47FB-B2E8-65DD53C7BB98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{5C51C622-C601-47FB-B2E8-65DD53C7BB98}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens de Solução", "{E93F47E2-95B1-4AEF-97CB-BCBA85A0DC6F}"
 	ProjectSection(SolutionItems) = preProject
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{03815AF3-4550-4993-95C8-8AD2290867DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{5C51C622-C601-47FB-B2E8-65DD53C7BB98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C51C622-C601-47FB-B2E8-65DD53C7BB98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C51C622-C601-47FB-B2E8-65DD53C7BB98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03815AF3-4550-4993-95C8-8AD2290867DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03815AF3-4550-4993-95C8-8AD2290867DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03815AF3-4550-4993-95C8-8AD2290867DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03815AF3-4550-4993-95C8-8AD2290867DE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
