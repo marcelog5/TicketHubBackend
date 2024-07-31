@@ -5,16 +5,27 @@ namespace Application.UseCases.CreateCustomer
 {
     public sealed class CreateCustomerUseCase : UseCase<CreateCustomerInput, CreateCustomerOutput>
     {
-        public override CreateCustomerOutput Execute(CreateCustomerInput input)
+        private readonly ICustomerRepository _customerRepository;
+        public CreateCustomerUseCase
+        (
+            ICustomerRepository customerRepository
+        )
         {
-            if (input.Cpf is null)
-            {
-                throw new ArgumentNullException(nameof(input.Cpf));
-            }
+            _customerRepository = customerRepository;
+        }
 
-            if (input.Email is null)
+        public async override Task<CreateCustomerOutput> Execute(
+            CreateCustomerInput input, 
+            CancellationToken cancellationToken)
+        {
+            bool customerExist = (await _customerRepository.CustomerAlreadyExist(
+                input.Email, 
+                input.Cpf, 
+                cancellationToken)) is not null;
+
+            if (customerExist)
             {
-                throw new ArgumentNullException(nameof(input.Email));
+                throw new Exception("Customer already exist.");
             }
 
             Customer customer = new Customer(
@@ -22,6 +33,8 @@ namespace Application.UseCases.CreateCustomer
                 input.Name,
                 input.Email,
                 input.Cpf);
+
+            _customerRepository.AddCustomer(customer);
 
             return new CreateCustomerOutput(
                 customer.Id,
