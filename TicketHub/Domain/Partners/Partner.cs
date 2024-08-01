@@ -1,23 +1,23 @@
 ﻿using Domain.Abstracts;
 using Domain.Shared;
 
-namespace Domain.Customers
+namespace Domain.Partners
 {
-    public sealed class Customer : Entity
+    public sealed class Partner : Entity
     {
-        public Customer(
-            Guid Id,
+        public Partner(
+            Guid id, 
             Name name, 
-            Email email, 
-            Cpf cpf) : base(Id)
+            Cnpj cnpj, 
+            Email email) : base(id)
         {
             Name = name;
+            Cnpj = cnpj;
             Email = email;
-            Cpf = cpf;
         }
 
         public Name Name { get; private set; }
+        public Cnpj Cnpj { get; private set; }
         public Email Email { get; private set; }
-        public Cpf Cpf { get; private set; }
     }
 }

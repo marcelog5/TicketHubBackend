@@ -2,7 +2,7 @@
 using Domain.Abstracts;
 using Domain.Customers;
 
-namespace Application.UseCases.CreateCustomer
+namespace Application.UseCases.CustomerUseCases.CreateCustomer
 {
     public sealed class CreateCustomerUseCase : UseCase<CreateCustomerInput, Result<CreateCustomerOutput>>
     {

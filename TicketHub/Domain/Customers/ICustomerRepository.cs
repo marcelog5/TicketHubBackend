@@ -1,4 +1,6 @@
-﻿namespace Domain.Customers
+﻿using Domain.Shared;
+
+namespace Domain.Customers
 {
     public interface ICustomerRepository
     {

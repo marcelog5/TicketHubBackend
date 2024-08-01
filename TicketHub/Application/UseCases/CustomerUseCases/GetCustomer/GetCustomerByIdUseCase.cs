@@ -2,7 +2,7 @@
 using Domain.Abstracts;
 using Domain.Customers;
 
-namespace Application.UseCases.GetCustomer
+namespace Application.UseCases.CustomerUseCases.GetCustomer
 {
     public sealed class GetCustomerByIdUseCase : UseCase<GetCustomerByIdInput, Result<GetCustomerByIdOutput>>
     {
@@ -17,11 +17,11 @@ namespace Application.UseCases.GetCustomer
         }
 
         public async override Task<Result<GetCustomerByIdOutput>> Execute(
-            GetCustomerByIdInput input, 
+            GetCustomerByIdInput input,
             CancellationToken cancellationToken = default)
         {
             Customer customer = await _customerRepository.GetCustomerById(
-                input.Id, 
+                input.Id,
                 cancellationToken);
 
             if (customer == null)

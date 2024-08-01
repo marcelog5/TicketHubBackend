@@ -1,7 +1,7 @@
-﻿using Application.UseCases.CreateCustomer;
-using Application.UseCases.GetCustomer;
+﻿using Application.UseCases.CustomerUseCases.GetCustomer;
 using Domain.Abstracts;
 using Domain.Customers;
+using Domain.Shared;
 using Moq;
 
 namespace Test.Application.UseCases

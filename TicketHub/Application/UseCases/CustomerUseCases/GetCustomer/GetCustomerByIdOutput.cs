@@ -1,6 +1,7 @@
 ﻿using Domain.Customers;
+using Domain.Shared;
 
-namespace Application.UseCases.GetCustomer
+namespace Application.UseCases.CustomerUseCases.GetCustomer
 {
     public sealed record GetCustomerByIdOutput(
         Name Name,
