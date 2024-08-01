@@ -1,4 +1,5 @@
 ﻿using Application.UseCases.CreateCustomer;
+using Domain.Abstracts;
 using Domain.Customers;
 using Moq;
 
@@ -15,27 +16,25 @@ namespace Test.Application.UseCases
                 new Email("john.doe@gmail.com"),
                 new Cpf("12345678901"));
 
-            Customer customerResponse = null;
-
             var customerRepoMock = new Mock<ICustomerRepository>();
             customerRepoMock
                 .Setup(x => x.CustomerAlreadyExist(
                     new Email("john.doe@gmail.com"), 
                     new Cpf("12345678901"), 
                     new CancellationToken()))
-                .ReturnsAsync(customerResponse);
+                .ReturnsAsync(false);
             customerRepoMock.Setup(x => x.AddCustomer(It.IsAny<Customer>()));
 
             CreateCustomerUseCase useCase = new CreateCustomerUseCase(customerRepoMock.Object);
 
             // Act
-            CreateCustomerOutput output = await useCase.Execute(createInput, new CancellationToken());
+            Result<CreateCustomerOutput> output = await useCase.Execute(createInput, new CancellationToken());
 
             // Assert
-            Assert.NotEqual(Guid.Empty, output.Id);
-            Assert.Equal(new Name("John Doe"), output.Name);
-            Assert.Equal(new Email("john.doe@gmail.com"), output.Email);
-            Assert.Equal(new Cpf("12345678901"), output.Cpf);
+            Assert.NotEqual(Guid.Empty, output.Value.Id);
+            Assert.Equal(new Name("John Doe"), output.Value.Name);
+            Assert.Equal(new Email("john.doe@gmail.com"), output.Value.Email);
+            Assert.Equal(new Cpf("12345678901"), output.Value.Cpf);
         }
 
         [Fact]
@@ -47,27 +46,21 @@ namespace Test.Application.UseCases
                 new Email("john.doe@gmail.com"),
                 new Cpf("12345678901"));
 
-            Customer customerResponse = new Customer(
-                Guid.NewGuid(),
-                new Name("John Doe"),
-                new Email("john.doe@gmail.com"),
-                new Cpf("12345678901"));
-
             var customerRepoMock = new Mock<ICustomerRepository>();
             customerRepoMock
                 .Setup(x => x.CustomerAlreadyExist(
                     new Email("john.doe@gmail.com"),
                     new Cpf("12345678901"),
                     It.IsAny<CancellationToken>())) // Use It.IsAny<CancellationToken>() para permitir qualquer token de cancelamento
-                .ReturnsAsync(customerResponse);
+                .ReturnsAsync(true);
 
             CreateCustomerUseCase useCase = new CreateCustomerUseCase(customerRepoMock.Object);
 
-            // Act & Assert
-            var exception = await Assert.ThrowsAnyAsync<Exception>(() =>
-                useCase.Execute(createInput, CancellationToken.None));
+            // Act
+            Result<CreateCustomerOutput> output = await useCase.Execute(createInput, new CancellationToken());
 
-            Assert.Equal("Customer already exist.", exception.Message);
+            // Assert
+            Assert.Equal(output.Error, CustomerErrors.AlreadyExists);
         }
 
     }
