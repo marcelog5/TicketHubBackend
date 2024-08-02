@@ -6,18 +6,18 @@ namespace Domain.Partners
     public sealed class Partner : Entity
     {
         public Partner(
-            Guid id, 
-            Name name, 
-            Cnpj cnpj, 
-            Email email) : base(id)
+            Guid id,
+            Name name,
+            Email email,
+            Cnpj cnpj) : base(id)
         {
             Name = name;
-            Cnpj = cnpj;
             Email = email;
+            Cnpj = cnpj;
         }
 
         public Name Name { get; private set; }
-        public Cnpj Cnpj { get; private set; }
         public Email Email { get; private set; }
+        public Cnpj Cnpj { get; private set; }
     }
 }

@@ -20,7 +20,7 @@ namespace Application.UseCases.CustomerUseCases.GetCustomer
             GetCustomerByIdInput input,
             CancellationToken cancellationToken = default)
         {
-            Customer customer = await _customerRepository.GetCustomerById(
+            Customer customer = await _customerRepository.GetById(
                 input.Id,
                 cancellationToken);
 

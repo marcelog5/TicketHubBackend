@@ -21,7 +21,7 @@ namespace Application.UseCases.PartnerUseCases.CreatePartner
             CancellationToken cancellationToken = default)
         {
             bool partnerExist = await _partnerRepository.AlreadyExist(
-                input.Cnpj, input.Email, cancellationToken);
+                input.Email, input.Cnpj, cancellationToken);
 
             if (partnerExist)
             {
@@ -31,8 +31,8 @@ namespace Application.UseCases.PartnerUseCases.CreatePartner
             var partner = new Partner(
                 Guid.NewGuid(),
                 input.Name,
-                input.Cnpj,
-                input.Email);
+                input.Email,
+                input.Cnpj);
 
             await _partnerRepository.Add(partner);
 

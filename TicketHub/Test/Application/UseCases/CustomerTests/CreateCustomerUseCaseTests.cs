@@ -4,7 +4,7 @@ using Domain.Customers;
 using Domain.Shared;
 using Moq;
 
-namespace Test.Application.UseCases
+namespace Test.Application.UseCases.CustomerTests
 {
     public class CreateCustomerUseCaseTests
     {
@@ -19,12 +19,12 @@ namespace Test.Application.UseCases
 
             var customerRepoMock = new Mock<ICustomerRepository>();
             customerRepoMock
-                .Setup(x => x.CustomerAlreadyExist(
-                    new Email("john.doe@gmail.com"), 
-                    new Cpf("12345678901"), 
+                .Setup(x => x.AlreadyExist(
+                    new Email("john.doe@gmail.com"),
+                    new Cpf("12345678901"),
                     new CancellationToken()))
                 .ReturnsAsync(false);
-            customerRepoMock.Setup(x => x.AddCustomer(It.IsAny<Customer>()));
+            customerRepoMock.Setup(x => x.Add(It.IsAny<Customer>(), new CancellationToken()));
 
             CreateCustomerUseCase useCase = new CreateCustomerUseCase(customerRepoMock.Object);
 
@@ -49,7 +49,7 @@ namespace Test.Application.UseCases
 
             var customerRepoMock = new Mock<ICustomerRepository>();
             customerRepoMock
-                .Setup(x => x.CustomerAlreadyExist(
+                .Setup(x => x.AlreadyExist(
                     new Email("john.doe@gmail.com"),
                     new Cpf("12345678901"),
                     It.IsAny<CancellationToken>())) // Use It.IsAny<CancellationToken>() para permitir qualquer token de cancelamento
@@ -61,8 +61,7 @@ namespace Test.Application.UseCases
             Result<CreateCustomerOutput> output = await useCase.Execute(createInput, new CancellationToken());
 
             // Assert
-            Assert.Equal(output.Error, CustomerErrors.AlreadyExists);
+            Assert.Equal(output.Error, CustomerErrors.AlreadyExist);
         }
-
     }
 }

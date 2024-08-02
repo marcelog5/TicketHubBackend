@@ -17,14 +17,14 @@ namespace Application.UseCases.CustomerUseCases.CreateCustomer
             CreateCustomerInput input,
             CancellationToken cancellationToken)
         {
-            var customerExist = await _customerRepository.CustomerAlreadyExist(
+            var customerExist = await _customerRepository.AlreadyExist(
                 input.Email,
                 input.Cpf,
                 cancellationToken);
 
             if (customerExist)
             {
-                return Result.Failure<CreateCustomerOutput>(CustomerErrors.AlreadyExists);
+                return Result.Failure<CreateCustomerOutput>(CustomerErrors.AlreadyExist);
             }
 
             var customer = new Customer(
@@ -33,7 +33,7 @@ namespace Application.UseCases.CustomerUseCases.CreateCustomer
                 input.Email,
                 input.Cpf);
 
-            await _customerRepository.AddCustomer(customer);
+            await _customerRepository.Add(customer, cancellationToken);
 
             return new CreateCustomerOutput(
                 customer.Id,

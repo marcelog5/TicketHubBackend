@@ -4,7 +4,7 @@ using Domain.Customers;
 using Domain.Shared;
 using Moq;
 
-namespace Test.Application.UseCases
+namespace Test.Application.UseCases.CustomerTests
 {
     public class GetCustomerByIdUseCaseTests
     {
@@ -23,7 +23,7 @@ namespace Test.Application.UseCases
 
             var customerRepoMock = new Mock<ICustomerRepository>();
             customerRepoMock
-                .Setup(x => x.GetCustomerById(
+                .Setup(x => x.GetById(
                     customer.Id,
                     new CancellationToken()))
                 .ReturnsAsync(customer);
@@ -53,7 +53,7 @@ namespace Test.Application.UseCases
 
             var customerRepoMock = new Mock<ICustomerRepository>();
             customerRepoMock
-                .Setup(x => x.GetCustomerById(
+                .Setup(x => x.GetById(
                     invalidId,
                     new CancellationToken()))
                 .ReturnsAsync(customer);

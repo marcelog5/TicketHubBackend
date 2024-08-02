@@ -4,7 +4,7 @@ using Domain.Shared;
 namespace Application.UseCases.PartnerUseCases.CreatePartner
 {
     public sealed record CreatePartnerInput(
-        Cnpj Cnpj,
+        Name Name,
         Email Email,
-        Name Name);
+        Cnpj Cnpj);
 }
