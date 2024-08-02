@@ -1,7 +1,5 @@
 ﻿using Application.Abstracts;
-using Application.UseCases.CustomerUseCases.GetCustomer;
 using Domain.Abstracts;
-using Domain.Customers;
 using Domain.Partners;
 
 namespace Application.UseCases.PartnerUseCases.GetPartner
