@@ -6,5 +6,6 @@ namespace Application.UseCases.EventUseCases.CreateEvent
         Guid Id,
         DateTime Date,
         Name Name,
+        int TotalSpots,
         Guid PartnerId);
 }

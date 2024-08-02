@@ -42,6 +42,7 @@ namespace Application.UseCases.EventUseCases.CreateEvent
                 @event.Id,
                 @event.Date,
                 @event.Name,
+                @event.TotalSpots,
                 @event.PartnerId);
         }
     }
