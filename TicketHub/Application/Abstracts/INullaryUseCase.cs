@@ -1,6 +1,6 @@
 ﻿namespace Application.Abstracts
 {
-    public abstract class NullaryUseCase<TOutput>
+    public interface INullaryUseCase<TOutput>
         where TOutput : class
     {
         // 1. The nullary use case has only an output. Doesn't return a entity, agregate or value object.

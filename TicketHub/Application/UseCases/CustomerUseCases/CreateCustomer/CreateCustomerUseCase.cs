@@ -1,10 +1,10 @@
-﻿using Application.Abstracts;
-using Domain.Abstracts;
+﻿using Domain.Abstracts;
 using Domain.Customers;
+using Domain.Customers.UseCases;
 
 namespace Application.UseCases.CustomerUseCases.CreateCustomer
 {
-    public sealed class CreateCustomerUseCase : UseCase<CreateCustomerInput, Result<CreateCustomerOutput>>
+    public sealed class CreateCustomerUseCase : ICreateCustomerUseCase
     {
         private readonly ICustomerRepository _customerRepository;
 
@@ -13,7 +13,7 @@ namespace Application.UseCases.CustomerUseCases.CreateCustomer
             _customerRepository = customerRepository;
         }
 
-        public async override Task<Result<CreateCustomerOutput>> Execute(
+        public async Task<Result<CreateCustomerOutput>> Execute(
             CreateCustomerInput input,
             CancellationToken cancellationToken)
         {

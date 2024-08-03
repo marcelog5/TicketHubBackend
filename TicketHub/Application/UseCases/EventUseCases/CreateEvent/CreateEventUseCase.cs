@@ -1,11 +1,10 @@
-﻿using Application.Abstracts;
-using Domain.Abstracts;
+﻿using Domain.Abstracts;
 using Domain.Events;
 using Domain.Partners;
 
 namespace Application.UseCases.EventUseCases.CreateEvent
 {
-    public class CreateEventUseCase : UseCase<CreateEventInput, Result<CreateEventOutput>>
+    public class CreateEventUseCase : ICreateEventUseCase
     {
         private readonly IPartnerRepository _partnerRepository;
         private readonly IEventRepository _eventRepository;
@@ -18,7 +17,7 @@ namespace Application.UseCases.EventUseCases.CreateEvent
             _eventRepository = eventRepository;
         }
 
-        public async override Task<Result<CreateEventOutput>> Execute(
+        public async Task<Result<CreateEventOutput>> Execute(
             CreateEventInput input,
             CancellationToken cancellationToken = default)
         {

@@ -1,10 +1,9 @@
-﻿using Application.Abstracts;
-using Domain.Abstracts;
+﻿using Domain.Abstracts;
 using Domain.Partners;
 
 namespace Application.UseCases.PartnerUseCases.CreatePartner
 {
-    public sealed class CreatePartnerUseCase : UseCase<CreatePartnerInput, Result<CreatePartnerOutput>>
+    public sealed class CreatePartnerUseCase : ICreatePartnerUseCase
     {
         private IPartnerRepository _partnerRepository;
 
@@ -16,7 +15,7 @@ namespace Application.UseCases.PartnerUseCases.CreatePartner
             _partnerRepository = partnerRepository;
         }
 
-        public async override Task<Result<CreatePartnerOutput>> Execute(
+        public async Task<Result<CreatePartnerOutput>> Execute(
             CreatePartnerInput input, 
             CancellationToken cancellationToken = default)
         {

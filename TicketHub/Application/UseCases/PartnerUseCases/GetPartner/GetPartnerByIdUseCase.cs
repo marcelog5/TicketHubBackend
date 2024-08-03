@@ -1,10 +1,9 @@
-﻿using Application.Abstracts;
-using Domain.Abstracts;
+﻿using Domain.Abstracts;
 using Domain.Partners;
 
 namespace Application.UseCases.PartnerUseCases.GetPartner
 {
-    public class GetPartnerByIdUseCase : UseCase<GetPartnerByIdInput, Result<GetPartnerByIdOutput>>
+    public class GetPartnerByIdUseCase : IGetPartnerByIdUseCase
     {
         private readonly IPartnerRepository _partnerRepository;
 
@@ -16,7 +15,7 @@ namespace Application.UseCases.PartnerUseCases.GetPartner
             _partnerRepository = partnerRepository;
         }
 
-        public async override Task<Result<GetPartnerByIdOutput>> Execute(
+        public async Task<Result<GetPartnerByIdOutput>> Execute(
             GetPartnerByIdInput input, 
             CancellationToken cancellationToken = default)
         {

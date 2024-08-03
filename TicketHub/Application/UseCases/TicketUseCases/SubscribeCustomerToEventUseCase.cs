@@ -1,12 +1,11 @@
-﻿using Application.Abstracts;
-using Domain.Abstracts;
+﻿using Domain.Abstracts;
 using Domain.Customers;
 using Domain.Events;
 using Domain.Tickets;
 
 namespace Application.UseCases.TicketUseCases
 {
-    public class SubscribeCustomerToEventUseCase : UseCase<SubscribeCustomerToEventInput, Result<SubscribeCustomerToEventOutput>>
+    public class SubscribeCustomerToEventUseCase : ISubscribeCustomerToEventUseCase
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IEventRepository _eventRepository;
@@ -24,7 +23,7 @@ namespace Application.UseCases.TicketUseCases
             _ticketRepository = ticketRepository;
         }
 
-        public override async Task<Result<SubscribeCustomerToEventOutput>> Execute(
+        public async Task<Result<SubscribeCustomerToEventOutput>> Execute(
             SubscribeCustomerToEventInput input, 
             CancellationToken cancellationToken = default)
         {

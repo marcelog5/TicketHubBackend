@@ -1,6 +1,6 @@
 ﻿namespace Application.Abstracts
 {
-    public abstract class UnitUseCase<TInput>
+    public interface IUnitUseCase<TInput>
         where TInput : class
     {
         // 1. The nullary use case has only an input.
