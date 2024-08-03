@@ -16,6 +16,10 @@ namespace Domain.Partners
             Cnpj = cnpj;
         }
 
+        private Partner()
+        {
+        }
+
         public Name Name { get; private set; }
         public Email Email { get; private set; }
         public Cnpj Cnpj { get; private set; }

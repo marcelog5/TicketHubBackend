@@ -20,6 +20,10 @@ namespace Domain.Events
             PartnerId = partnerId;
         }
 
+        private Event()
+        {
+        }
+
         public DateTime Date { get; private set; }
         public Name Name { get; private set; }
         public int TotalSpots { get; private set; }

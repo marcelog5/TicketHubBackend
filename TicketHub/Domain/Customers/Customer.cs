@@ -16,6 +16,10 @@ namespace Domain.Customers
             Cpf = cpf;
         }
 
+        private Customer() 
+        { 
+        }
+
         public Name Name { get; private set; }
         public Email Email { get; private set; }
         public Cpf Cpf { get; private set; }

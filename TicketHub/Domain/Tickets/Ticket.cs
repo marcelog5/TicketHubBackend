@@ -21,6 +21,10 @@ namespace Domain.Tickets
             EventId = eventId;
         }
 
+        private Ticket()
+        {
+        }
+
         public EnTicketStatus Status { get; private set; }
         public DateTime? PaidAt { get; private set; }
         public DateTime ReservedAt { get; private set; }

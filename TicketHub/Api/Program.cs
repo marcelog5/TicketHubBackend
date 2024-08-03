@@ -1,9 +1,11 @@
+using Api.Extensions;
 using Application.UseCases.CustomerUseCases.CreateCustomer;
 using Application.UseCases.CustomerUseCases.GetCustomer;
 using Application.UseCases.EventUseCases.CreateEvent;
 using Application.UseCases.PartnerUseCases.CreatePartner;
 using Application.UseCases.PartnerUseCases.GetPartner;
 using Application.UseCases.TicketUseCases;
+using Data.EntityFramework;
 using Domain.Customers.UseCases;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDataEfCore(builder.Configuration);
 
 // Use Cases
 builder.Services.AddTransient<ICreateCustomerUseCase, CreateCustomerUseCase>();
@@ -30,6 +34,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    app.ApplyMigrations();
 }
 
 app.UseHttpsRedirection();

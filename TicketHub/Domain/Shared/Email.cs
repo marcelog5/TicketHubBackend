@@ -1,4 +1,4 @@
 ﻿namespace Domain.Shared
 {
-    public record Email(string value);
+    public record Email(string Value);
 }
