@@ -1,5 +1,6 @@
 ﻿using Domain.Partners;
 using Domain.Shared;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.EntityFramework.Repositories
 {
@@ -9,9 +10,14 @@ namespace Data.EntityFramework.Repositories
         {
         }
 
-        public Task<bool> AlreadyExist(Email email, Cnpj cnpj, CancellationToken cancellationToken = default)
+        public async Task<bool> AlreadyExist(
+            Email email, 
+            Cnpj cnpj, 
+            CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await DbContext
+                .Set<Partner>()
+                .AnyAsync(p => p.Email == email || p.Cnpj == cnpj, cancellationToken);
         }
     }
 }

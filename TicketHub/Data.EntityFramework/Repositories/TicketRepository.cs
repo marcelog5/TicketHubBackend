@@ -1,4 +1,5 @@
 ﻿using Domain.Tickets;
+using Microsoft.EntityFrameworkCore;
 
 namespace Data.EntityFramework.Repositories
 {
@@ -8,12 +9,14 @@ namespace Data.EntityFramework.Repositories
         {
         }
 
-        public Task<bool> customerAlreadySubscribed(
+        public async Task<bool> customerAlreadySubscribed(
             Guid eventId, 
             Guid customerId, 
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            return await DbContext.
+                Set<Ticket>()
+                .AnyAsync(t => t.EventId == eventId && t.CustomerId == customerId, cancellationToken);
         }
     }
 }

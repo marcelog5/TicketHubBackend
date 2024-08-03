@@ -1,5 +1,4 @@
-﻿using Domain.Customers;
-using Domain.Partners;
+﻿using Domain.Partners;
 using Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
