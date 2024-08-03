@@ -58,6 +58,12 @@ namespace Test.Application.UseCases.TicketsTests
 
             var ticketRepoMock = new Mock<ITicketRepository>();
             ticketRepoMock
+                .Setup(x => x.customerAlreadySubscribed(
+                        @event.Id,
+                        customer.Id,
+                        new CancellationToken()))
+                    .ReturnsAsync(false);
+            ticketRepoMock
                 .Setup(x => x.Add(
                     ticket,
                     new CancellationToken()));
@@ -163,6 +169,66 @@ namespace Test.Application.UseCases.TicketsTests
         }
 
         [Fact]
+        public async void Execute_WhenCalled_CustomerAlreadyHasTickets_MustReturnError()
+        {
+            // Arrange
+            Guid customerId = Guid.NewGuid();
+            Guid eventId = Guid.NewGuid();
+            int spotsNumber = 10;
+
+            Customer customer = new Customer(
+                customerId,
+                new Name("John Doe"),
+                new Email("john.doe@gmail.com"),
+                new Cpf("12345678901"));
+
+            Event @event = new Event(
+                eventId,
+                DateTime.Now,
+                new Name("Event Name"),
+                spotsNumber,
+                customerId);
+
+            SubscribeCustomerToEventInput createInput = new SubscribeCustomerToEventInput(
+                eventId,
+                customerId);
+
+            var customerRepoMock = new Mock<ICustomerRepository>();
+            customerRepoMock
+                .Setup(x => x.GetById(
+                    customerId,
+                    new CancellationToken()))
+                .ReturnsAsync(customer);
+
+            var eventRepoMock = new Mock<IEventRepository>();
+            eventRepoMock.Setup(x => x.GetById(
+                    eventId,
+                    new CancellationToken()))
+                .ReturnsAsync(@event);
+
+            var ticketRepoMock = new Mock<ITicketRepository>();
+            ticketRepoMock
+                .Setup(x => x.customerAlreadySubscribed(
+                        @event.Id,
+                        customer.Id,
+                        new CancellationToken()))
+                    .ReturnsAsync(true);
+
+            SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(
+                customerRepoMock.Object,
+                eventRepoMock.Object,
+                ticketRepoMock.Object);
+
+            // Act
+            Result<SubscribeCustomerToEventOutput> output = await useCase.Execute(
+                createInput,
+                new CancellationToken());
+
+            // Assert
+            Assert.Equal(output.Error, TicketErrors.CustomerAlreadySubscribed);
+        }
+
+        [Fact]
         public async void Execute_WhenCalled_WithMoreTicketsThanSpots_MustReturnError()
         {
             // Arrange
@@ -212,6 +278,12 @@ namespace Test.Application.UseCases.TicketsTests
                 .ReturnsAsync(@event);
 
             var ticketRepoMock = new Mock<ITicketRepository>();
+            ticketRepoMock
+                .Setup(x => x.customerAlreadySubscribed(
+                        @event.Id,
+                        customer.Id,
+                        new CancellationToken()))
+                    .ReturnsAsync(false);
 
             SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(
                 customerRepoMock.Object,

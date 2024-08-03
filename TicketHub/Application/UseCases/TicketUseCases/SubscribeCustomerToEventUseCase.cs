@@ -46,6 +46,23 @@ namespace Application.UseCases.TicketUseCases
                     EventErrors.NotFound);
             }
 
+            if (@event is null)
+            {
+                return Result.Failure<SubscribeCustomerToEventOutput>(
+                    EventErrors.NotFound);
+            }
+
+            bool customerAlreadySubscribed = await _ticketRepository.customerAlreadySubscribed(
+                @event.Id,
+                customer.Id,
+                cancellationToken);
+
+            if (customerAlreadySubscribed)
+            {
+               return Result.Failure<SubscribeCustomerToEventOutput>(
+                    TicketErrors.CustomerAlreadySubscribed);
+            }
+
             if (@event.TotalSpots < @event.Tickets.Count + 1)
             {
                 return Result.Failure<SubscribeCustomerToEventOutput>(
