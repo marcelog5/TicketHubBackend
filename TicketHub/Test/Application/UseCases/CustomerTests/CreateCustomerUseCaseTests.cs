@@ -26,7 +26,14 @@ namespace Test.Application.UseCases.CustomerTests
                 .ReturnsAsync(false);
             customerRepoMock.Setup(x => x.Add(It.IsAny<Customer>(), new CancellationToken()));
 
-            CreateCustomerUseCase useCase = new CreateCustomerUseCase(customerRepoMock.Object);
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock
+                .Setup(x => x.SaveChangesAsync(new CancellationToken()))
+                .ReturnsAsync(1);
+
+            CreateCustomerUseCase useCase = new CreateCustomerUseCase(
+                customerRepoMock.Object,
+                unitOfWorkMock.Object);
 
             // Act
             Result<CreateCustomerOutput> output = await useCase.Execute(createInput, new CancellationToken());
@@ -39,7 +46,7 @@ namespace Test.Application.UseCases.CustomerTests
         }
 
         [Fact]
-        public async Task Execute_WhenCustomerAlreadyExist_MustThrowException()
+        public async Task Execute_WhenCustomerAlreadyExist_MustReturnError()
         {
             // Arrange
             CreateCustomerInput createInput = new CreateCustomerInput(
@@ -55,7 +62,11 @@ namespace Test.Application.UseCases.CustomerTests
                     It.IsAny<CancellationToken>())) // Use It.IsAny<CancellationToken>() para permitir qualquer token de cancelamento
                 .ReturnsAsync(true);
 
-            CreateCustomerUseCase useCase = new CreateCustomerUseCase(customerRepoMock.Object);
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+
+            CreateCustomerUseCase useCase = new CreateCustomerUseCase(
+                customerRepoMock.Object, 
+                unitOfWorkMock.Object);
 
             // Act
             Result<CreateCustomerOutput> output = await useCase.Execute(createInput, new CancellationToken());

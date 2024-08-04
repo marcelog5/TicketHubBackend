@@ -10,17 +10,20 @@ namespace Application.UseCases.TicketUseCases
         private readonly ICustomerRepository _customerRepository;
         private readonly IEventRepository _eventRepository;
         private readonly ITicketRepository _ticketRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public SubscribeCustomerToEventUseCase
         (
             ICustomerRepository customerRepository, 
             IEventRepository eventRepository,
-            ITicketRepository ticketRepository
+            ITicketRepository ticketRepository,
+            IUnitOfWork unitOfWork
         )
         {
             _customerRepository = customerRepository;
             _eventRepository = eventRepository;
             _ticketRepository = ticketRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<SubscribeCustomerToEventOutput>> Execute(
@@ -77,6 +80,8 @@ namespace Application.UseCases.TicketUseCases
                 @event.Id);
 
             await _ticketRepository.Add(ticket, cancellationToken);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new SubscribeCustomerToEventOutput(
                 ticket.Id,

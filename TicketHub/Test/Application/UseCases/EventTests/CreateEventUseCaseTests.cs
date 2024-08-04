@@ -35,9 +35,15 @@ namespace Test.Application.UseCases.EventTests
             var eventRepoMock = new Mock<IEventRepository>();
             eventRepoMock.Setup(x => x.Add(It.IsAny<Event>(), new CancellationToken()));
 
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock
+                .Setup(x => x.SaveChangesAsync(new CancellationToken()))
+                .ReturnsAsync(1);
+
             CreateEventUseCase useCase = new CreateEventUseCase(
                 partnerRepoMock.Object, 
-                eventRepoMock.Object);
+                eventRepoMock.Object,
+                unitOfWorkMock.Object);
 
             // Act
             Result<CreateEventOutput> output = await useCase.Execute(
@@ -71,10 +77,12 @@ namespace Test.Application.UseCases.EventTests
                 .ReturnsAsync(partner);
 
             var eventRepoMock = new Mock<IEventRepository>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             CreateEventUseCase useCase = new CreateEventUseCase(
                 partnerRepoMock.Object,
-                eventRepoMock.Object);
+                eventRepoMock.Object,
+                unitOfWorkMock.Object);
 
             // Act
             Result<CreateEventOutput> output = await useCase.Execute(

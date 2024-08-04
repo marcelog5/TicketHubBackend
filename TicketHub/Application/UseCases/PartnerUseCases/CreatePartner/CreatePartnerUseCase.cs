@@ -6,13 +6,17 @@ namespace Application.UseCases.PartnerUseCases.CreatePartner
     public sealed class CreatePartnerUseCase : ICreatePartnerUseCase
     {
         private IPartnerRepository _partnerRepository;
+        private readonly IUnitOfWork _unitOfWork;
+
 
         public CreatePartnerUseCase
         (
-            IPartnerRepository partnerRepository
+            IPartnerRepository partnerRepository,
+            IUnitOfWork unitOfWork
         )
         {
             _partnerRepository = partnerRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<CreatePartnerOutput>> Execute(
@@ -34,6 +38,8 @@ namespace Application.UseCases.PartnerUseCases.CreatePartner
                 input.Cnpj);
 
             await _partnerRepository.Add(partner);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new CreatePartnerOutput(
                 partner.Id,

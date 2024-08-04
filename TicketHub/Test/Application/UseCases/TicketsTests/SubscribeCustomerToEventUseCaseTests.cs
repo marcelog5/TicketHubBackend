@@ -68,10 +68,16 @@ namespace Test.Application.UseCases.TicketsTests
                     ticket,
                     new CancellationToken()));
 
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock
+                .Setup(x => x.SaveChangesAsync(new CancellationToken()))
+                .ReturnsAsync(1);
+
             SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(
                 customerRepoMock.Object,
                 eventRepoMock.Object,
-                ticketRepoMock.Object);
+                ticketRepoMock.Object, 
+                unitOfWorkMock.Object);
 
             // Act
             Result<SubscribeCustomerToEventOutput> output = await useCase.Execute(
@@ -105,11 +111,13 @@ namespace Test.Application.UseCases.TicketsTests
 
             var eventRepoMock = new Mock<IEventRepository>();
             var ticketRepoMock = new Mock<ITicketRepository>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(
                 customerRepoMock.Object,
                 eventRepoMock.Object,
-                ticketRepoMock.Object);
+                ticketRepoMock.Object, 
+                unitOfWorkMock.Object);
 
             // Act
             Result<SubscribeCustomerToEventOutput> output = await useCase.Execute(
@@ -153,11 +161,13 @@ namespace Test.Application.UseCases.TicketsTests
                 .ReturnsAsync(@event);
 
             var ticketRepoMock = new Mock<ITicketRepository>();
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(
                 customerRepoMock.Object,
                 eventRepoMock.Object,
-                ticketRepoMock.Object);
+                ticketRepoMock.Object,
+                unitOfWorkMock.Object);
 
             // Act
             Result<SubscribeCustomerToEventOutput> output = await useCase.Execute(
@@ -214,10 +224,13 @@ namespace Test.Application.UseCases.TicketsTests
                         new CancellationToken()))
                     .ReturnsAsync(true);
 
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+
             SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(
                 customerRepoMock.Object,
                 eventRepoMock.Object,
-                ticketRepoMock.Object);
+                ticketRepoMock.Object, 
+                unitOfWorkMock.Object);
 
             // Act
             Result<SubscribeCustomerToEventOutput> output = await useCase.Execute(
@@ -285,10 +298,13 @@ namespace Test.Application.UseCases.TicketsTests
                         new CancellationToken()))
                     .ReturnsAsync(false);
 
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+
             SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(
                 customerRepoMock.Object,
                 eventRepoMock.Object,
-                ticketRepoMock.Object);
+                ticketRepoMock.Object, 
+                unitOfWorkMock.Object);
 
             // Act
             Result<SubscribeCustomerToEventOutput> output = await useCase.Execute(

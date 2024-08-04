@@ -8,13 +8,16 @@ namespace Application.UseCases.EventUseCases.CreateEvent
     {
         private readonly IPartnerRepository _partnerRepository;
         private readonly IEventRepository _eventRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CreateEventUseCase(
             IPartnerRepository partnerRepository,
-            IEventRepository eventRepository)
+            IEventRepository eventRepository,
+            IUnitOfWork unitOfWork)
         {
             _partnerRepository = partnerRepository;
             _eventRepository = eventRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<CreateEventOutput>> Execute(
@@ -36,6 +39,8 @@ namespace Application.UseCases.EventUseCases.CreateEvent
                 partner.Id);
 
             await _eventRepository.Add(@event);
+            
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new CreateEventOutput(
                 @event.Id,

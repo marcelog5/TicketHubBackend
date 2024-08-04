@@ -26,7 +26,14 @@ namespace Test.Application.UseCases.PartnerTests
                 .ReturnsAsync(false);
             PartnerRepoMock.Setup(x => x.Add(It.IsAny<Partner>(), new CancellationToken()));
 
-            CreatePartnerUseCase useCase = new CreatePartnerUseCase(PartnerRepoMock.Object);
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+            unitOfWorkMock
+                .Setup(x => x.SaveChangesAsync(new CancellationToken()))
+                .ReturnsAsync(1);
+
+            CreatePartnerUseCase useCase = new CreatePartnerUseCase(
+                PartnerRepoMock.Object,
+                unitOfWorkMock.Object);
 
             // Act
             Result<CreatePartnerOutput> output = await useCase.Execute(createInput, new CancellationToken());
@@ -39,7 +46,7 @@ namespace Test.Application.UseCases.PartnerTests
         }
 
         [Fact]
-        public async Task Execute_WhenPartnerAlreadyExist_MustThrowException()
+        public async Task Execute_WhenPartnerAlreadyExist_MustReturnError()
         {
             // Arrange
             CreatePartnerInput createInput = new CreatePartnerInput(
@@ -55,7 +62,11 @@ namespace Test.Application.UseCases.PartnerTests
                     It.IsAny<CancellationToken>())) // Use It.IsAny<CancellationToken>() para permitir qualquer token de cancelamento
                 .ReturnsAsync(true);
 
-            CreatePartnerUseCase useCase = new CreatePartnerUseCase(PartnerRepoMock.Object);
+            var unitOfWorkMock = new Mock<IUnitOfWork>();
+
+            CreatePartnerUseCase useCase = new CreatePartnerUseCase(
+                PartnerRepoMock.Object, 
+                unitOfWorkMock.Object);
 
             // Act
             Result<CreatePartnerOutput> output = await useCase.Execute(createInput, new CancellationToken());
