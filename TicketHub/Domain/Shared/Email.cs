@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Domain.Shared
 {
@@ -12,7 +11,7 @@ namespace Domain.Shared
             if (!IsValidEmail(value))
                 throw new ArgumentException("Invalid email address.", nameof(value));
 
-            Value = value;
+            Value = value.ToLower();
         }
 
         private static bool IsValidEmail(string email)
@@ -22,7 +21,7 @@ namespace Domain.Shared
 
             // Simple regex for basic email validation
             string pattern = @"^[^@\s]+@[^@\s]+\.[^@\s]+$";
-            return Regex.IsMatch(email, pattern, RegexOptions.IgnoreCase);
+            return Regex.IsMatch(email.ToLower(), pattern, RegexOptions.IgnoreCase);
         }
     }
 }

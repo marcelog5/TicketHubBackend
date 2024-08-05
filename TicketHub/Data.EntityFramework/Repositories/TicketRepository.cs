@@ -1,5 +1,4 @@
 ﻿using Domain.Tickets;
-using Microsoft.EntityFrameworkCore;
 
 namespace Data.EntityFramework.Repositories
 {
