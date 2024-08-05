@@ -31,8 +31,7 @@ namespace Application.UseCases.PartnerUseCases.CreatePartner
                 return Result.Failure<CreatePartnerOutput>(PartnerErrors.AlreadyExist);
             }
 
-            var partner = new Partner(
-                Guid.NewGuid(),
+            var partner = Partner.Create(
                 input.Name,
                 input.Email,
                 input.Cnpj);

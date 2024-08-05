@@ -14,28 +14,24 @@ namespace Test.Application.UseCases.TicketsTests
         public async void Execute_WhenCalled_MustSubscribeCustomerToEvent()
         {
             // Arrange
-            Guid customerId = Guid.NewGuid();
-            Guid eventId = Guid.NewGuid();
-            Guid TicketId = Guid.NewGuid();
-
-            Customer customer = new Customer(
-                customerId,
+            Customer customer = Customer.Create(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cpf("12345678901"));
+                new Cpf("959.021.760-50"));
+            Guid customerId = customer.Id;
 
-            Event @event = new Event(
-                eventId,
-                DateTime.Now,
+            Event @event = Event.Create(
+                DateTime.Today.AddDays(1),
                 new Name("Event Name"),
                 200,
                 customerId);
+            Guid eventId = Guid.NewGuid();
 
-            Ticket ticket = new Ticket(
-                TicketId,
+            Ticket ticket = Ticket.Create(
                 EnTicketStatus.Pending,
                 null,
                 DateTime.UtcNow,
+                1,
                 customerId,
                 eventId);
 
@@ -57,12 +53,6 @@ namespace Test.Application.UseCases.TicketsTests
                 .ReturnsAsync(@event);
 
             var ticketRepoMock = new Mock<ITicketRepository>();
-            ticketRepoMock
-                .Setup(x => x.customerAlreadySubscribed(
-                        @event.Id,
-                        customer.Id,
-                        new CancellationToken()))
-                    .ReturnsAsync(false);
             ticketRepoMock
                 .Setup(x => x.Add(
                     ticket,
@@ -132,14 +122,13 @@ namespace Test.Application.UseCases.TicketsTests
         public async void Execute_WhenCalled_WithInvalidEventId_MustReturnError()
         {
             // Arrange
-            Guid customerId = Guid.NewGuid();
             Guid eventId = Guid.NewGuid();
 
-            Customer customer = new Customer(
-                customerId,
+            Customer customer = Customer.Create(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cpf("12345678901"));
+                new Cpf("959.021.760-50"));
+            Guid customerId = customer.Id;
 
             Event @event = null;
 
@@ -182,22 +171,28 @@ namespace Test.Application.UseCases.TicketsTests
         public async void Execute_WhenCalled_CustomerAlreadyHasTickets_MustReturnError()
         {
             // Arrange
-            Guid customerId = Guid.NewGuid();
             Guid eventId = Guid.NewGuid();
             int spotsNumber = 10;
 
-            Customer customer = new Customer(
-                customerId,
+            Customer customer = Customer.Create(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cpf("12345678901"));
+                new Cpf("959.021.760-50"));
+            Guid customerId = customer.Id;
 
-            Event @event = new Event(
-                eventId,
-                DateTime.Now,
+            Event @event = Event.Create(
+                DateTime.Today.AddDays(1),
                 new Name("Event Name"),
                 spotsNumber,
                 customerId);
+
+            @event.Tickets.Add(Ticket.Create(
+                EnTicketStatus.Pending,
+                null,
+                DateTime.UtcNow,
+                1,
+                customerId,
+                eventId));
 
             SubscribeCustomerToEventInput createInput = new SubscribeCustomerToEventInput(
                 eventId,
@@ -217,13 +212,6 @@ namespace Test.Application.UseCases.TicketsTests
                 .ReturnsAsync(@event);
 
             var ticketRepoMock = new Mock<ITicketRepository>();
-            ticketRepoMock
-                .Setup(x => x.customerAlreadySubscribed(
-                        @event.Id,
-                        customer.Id,
-                        new CancellationToken()))
-                    .ReturnsAsync(true);
-
             var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(
@@ -245,32 +233,30 @@ namespace Test.Application.UseCases.TicketsTests
         public async void Execute_WhenCalled_WithMoreTicketsThanSpots_MustReturnError()
         {
             // Arrange
-            Guid customerId = Guid.NewGuid();
             Guid eventId = Guid.NewGuid();
             int spotsNumber = 10;
 
-            Customer customer = new Customer(
-                customerId,
+            Customer customer = Customer.Create(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cpf("12345678901"));
+                new Cpf("959.021.760-50"));
+            Guid customerId = customer.Id;
 
-            Event @event = new Event(
-                eventId,
-                DateTime.Now,
+            Event @event = Event.Create(
+                DateTime.Today.AddDays(1),
                 new Name("Event Name"),
                 spotsNumber,
                 customerId);
 
             for (int i = 0; i < spotsNumber + 1; i++)
             {
-                @event.Tickets.Add(new Ticket(
-                    Guid.NewGuid(),
+                @event.Tickets.Add(Ticket.Create(
                     EnTicketStatus.Pending,
                     null,
                     DateTime.UtcNow,
-                    customerId,
-                    eventId));
+                    1,
+                    Guid.NewGuid(),
+                    Guid.NewGuid()));
             }
 
             SubscribeCustomerToEventInput createInput = new SubscribeCustomerToEventInput(
@@ -291,13 +277,6 @@ namespace Test.Application.UseCases.TicketsTests
                 .ReturnsAsync(@event);
 
             var ticketRepoMock = new Mock<ITicketRepository>();
-            ticketRepoMock
-                .Setup(x => x.customerAlreadySubscribed(
-                        @event.Id,
-                        customer.Id,
-                        new CancellationToken()))
-                    .ReturnsAsync(false);
-
             var unitOfWorkMock = new Mock<IUnitOfWork>();
 
             SubscribeCustomerToEventUseCase useCase = new SubscribeCustomerToEventUseCase(

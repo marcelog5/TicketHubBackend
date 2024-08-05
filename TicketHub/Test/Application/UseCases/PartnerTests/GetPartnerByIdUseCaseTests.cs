@@ -12,11 +12,10 @@ namespace Test.Application.UseCases.PartnerTests
         public async void Execute_WhenCalled_MustGetPartner()
         {
             // Arrange
-            Partner Partner = new Partner(
-                Guid.NewGuid(),
+            Partner Partner = Partner.Create(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cnpj("12345678901"));
+                new Cnpj("19.764.730/0001-97"));
 
             GetPartnerByIdInput createInput = new GetPartnerByIdInput(
                 Partner.Id);
@@ -38,7 +37,7 @@ namespace Test.Application.UseCases.PartnerTests
             // Assert
             Assert.Equal(new Name("John Doe"), output.Value.Name);
             Assert.Equal(new Email("john.doe@gmail.com"), output.Value.Email);
-            Assert.Equal(new Cnpj("12345678901"), output.Value.Cnpj);
+            Assert.Equal(new Cnpj("19.764.730/0001-97"), output.Value.Cnpj);
         }
 
         [Fact]

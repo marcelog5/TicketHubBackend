@@ -54,38 +54,21 @@ namespace Application.UseCases.TicketUseCases
                     EventErrors.NotFound);
             }
 
-            bool customerAlreadySubscribed = await _ticketRepository.customerAlreadySubscribed(
-                @event.Id,
-                customer.Id,
-                cancellationToken);
+            var ticket = @event.ReserveTicket(input.CustomerId);
 
-            if (customerAlreadySubscribed)
-            {
-               return Result.Failure<SubscribeCustomerToEventOutput>(
-                    TicketErrors.CustomerAlreadySubscribed);
-            }
-
-            if (@event.TotalSpots < @event.Tickets.Count + 1)
+            if (ticket.IsFailure)
             {
                 return Result.Failure<SubscribeCustomerToEventOutput>(
-                    EventErrors.NotEnoughSpots);
+                                       ticket.Error);
             }
 
-            var ticket = new Ticket(
-                Guid.NewGuid(),
-                EnTicketStatus.Pending,
-                null,
-                DateTime.UtcNow,
-                customer.Id,
-                @event.Id);
-
-            await _ticketRepository.Add(ticket, cancellationToken);
+            await _ticketRepository.Add(ticket.Value, cancellationToken);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return new SubscribeCustomerToEventOutput(
-                ticket.Id,
-                ticket.Status);
+                ticket.Value.Id,
+                ticket.Value.Status);
         }
     }
 }

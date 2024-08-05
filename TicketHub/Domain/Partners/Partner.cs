@@ -5,11 +5,11 @@ namespace Domain.Partners
 {
     public sealed class Partner : Entity
     {
-        public Partner(
-            Guid id,
+        private Partner(
+            Guid Id,
             Name name,
             Email email,
-            Cnpj cnpj) : base(id)
+            Cnpj cnpj) : base(Id)
         {
             Name = name;
             Email = email;
@@ -18,6 +18,11 @@ namespace Domain.Partners
 
         private Partner()
         {
+        }
+
+        public static Partner Create(Name name, Email email, Cnpj cnpj)
+        {
+            return new Partner(Guid.NewGuid(), name, email, cnpj);
         }
 
         public Name Name { get; private set; }

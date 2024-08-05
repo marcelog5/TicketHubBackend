@@ -31,8 +31,7 @@ namespace Application.UseCases.CustomerUseCases.CreateCustomer
                 return Result.Failure<CreateCustomerOutput>(CustomerErrors.AlreadyExist);
             }
 
-            var customer = new Customer(
-                Guid.NewGuid(),
+            var customer = Customer.Create(
                 input.Name,
                 input.Email,
                 input.Cpf);

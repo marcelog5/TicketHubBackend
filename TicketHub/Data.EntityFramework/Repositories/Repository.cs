@@ -13,7 +13,7 @@ namespace Data.EntityFramework.Repositories
             DbContext = dbContext;
         }
 
-        public async Task<T?> GetById(
+        public virtual async Task<T?> GetById(
             Guid id,
             CancellationToken cancellationToken = default)
         {
@@ -22,7 +22,7 @@ namespace Data.EntityFramework.Repositories
                 .FirstOrDefaultAsync(user => user.Id == id, cancellationToken);
         }
 
-        public async Task Add(
+        public virtual async Task Add(
             T entity, 
             CancellationToken cancellationToken = default)
         {

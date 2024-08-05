@@ -13,19 +13,17 @@ namespace Test.Application.UseCases.EventTests
         public async void Execute_WhenCalled_MustCreateEvent()
         {
             // Arrange
-            Guid partnerId = Guid.NewGuid();
+            Partner partner = Partner.Create(
+                new Name("John Doe"),
+                new Email("john.doe@gmail.com"),
+                new Cnpj("19.764.730/0001-97"));
+            Guid partnerId = partner.Id;
 
             CreateEventInput createInput = new CreateEventInput(
-                    DateTime.Now,
+                    DateTime.Today.AddDays(1),
                     new Name("Event Name"),
                     100,
                     partnerId);
-
-            Partner partner = new Partner(
-                partnerId,
-                new Name("John Doe"),
-                new Email("john.doe@gmail.com"),
-                new Cnpj("12345678000195"));
 
             var partnerRepoMock = new Mock<IPartnerRepository>();
             partnerRepoMock
@@ -65,7 +63,7 @@ namespace Test.Application.UseCases.EventTests
             Partner partner = null;
 
             CreateEventInput createInput = new CreateEventInput(
-                    DateTime.Now,
+                    DateTime.Today.AddDays(1),
                     new Name("Event Name"),
                     100,
                     Guid.NewGuid());

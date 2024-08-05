@@ -31,8 +31,7 @@ namespace Application.UseCases.EventUseCases.CreateEvent
                 return Result.Failure<CreateEventOutput>(PartnerErrors.NotFound);
             }
 
-            Event @event = new Event(
-                Guid.NewGuid(),
+            Event @event = Event.Create(
                 input.DateTime,
                 input.Name,
                 input.TotalSpots,

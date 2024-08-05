@@ -15,13 +15,13 @@ namespace Test.Application.UseCases.PartnerTests
             CreatePartnerInput createInput = new CreatePartnerInput(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cnpj("12345678000195"));
+                new Cnpj("19.764.730/0001-97"));
 
             var PartnerRepoMock = new Mock<IPartnerRepository>();
             PartnerRepoMock
                 .Setup(x => x.AlreadyExist(
                     new Email("john.doe@gmail.com"),
-                    new Cnpj("12345678000195"),
+                    new Cnpj("19.764.730/0001-97"),
                     new CancellationToken()))
                 .ReturnsAsync(false);
             PartnerRepoMock.Setup(x => x.Add(It.IsAny<Partner>(), new CancellationToken()));
@@ -42,7 +42,7 @@ namespace Test.Application.UseCases.PartnerTests
             Assert.NotEqual(Guid.Empty, output.Value.Id);
             Assert.Equal(new Name("John Doe"), output.Value.Name);
             Assert.Equal(new Email("john.doe@gmail.com"), output.Value.Email);
-            Assert.Equal(new Cnpj("12345678000195"), output.Value.Cnpj);
+            Assert.Equal(new Cnpj("19.764.730/0001-97"), output.Value.Cnpj);
         }
 
         [Fact]
@@ -52,13 +52,13 @@ namespace Test.Application.UseCases.PartnerTests
             CreatePartnerInput createInput = new CreatePartnerInput(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cnpj("12345678000195"));
+                new Cnpj("19.764.730/0001-97"));
 
             var PartnerRepoMock = new Mock<IPartnerRepository>();
             PartnerRepoMock
                 .Setup(x => x.AlreadyExist(
                     new Email("john.doe@gmail.com"),
-                    new Cnpj("12345678000195"),
+                    new Cnpj("19.764.730/0001-97"),
                     It.IsAny<CancellationToken>())) // Use It.IsAny<CancellationToken>() para permitir qualquer token de cancelamento
                 .ReturnsAsync(true);
 

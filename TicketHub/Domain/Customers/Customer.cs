@@ -5,7 +5,7 @@ namespace Domain.Customers
 {
     public sealed class Customer : Entity
     {
-        public Customer(
+        private Customer(
             Guid Id,
             Name name, 
             Email email, 
@@ -18,6 +18,11 @@ namespace Domain.Customers
 
         private Customer() 
         { 
+        }
+
+        public static Customer Create(Name name, Email email, Cpf cpf)
+        {
+            return new Customer(Guid.NewGuid(), name, email, cpf);
         }
 
         public Name Name { get; private set; }

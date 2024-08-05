@@ -12,11 +12,10 @@ namespace Test.Application.UseCases.CustomerTests
         public async void Execute_WhenCalled_MustGetCustomer()
         {
             // Arrange
-            Customer customer = new Customer(
-                Guid.NewGuid(),
+            Customer customer = Customer.Create(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cpf("12345678901"));
+                new Cpf("959.021.760-50"));
 
             GetCustomerByIdInput createInput = new GetCustomerByIdInput(
                 customer.Id);
@@ -38,7 +37,7 @@ namespace Test.Application.UseCases.CustomerTests
             // Assert
             Assert.Equal(new Name("John Doe"), output.Value.Name);
             Assert.Equal(new Email("john.doe@gmail.com"), output.Value.Email);
-            Assert.Equal(new Cpf("12345678901"), output.Value.Cpf);
+            Assert.Equal(new Cpf("959.021.760-50"), output.Value.Cpf);
         }
 
         [Fact]

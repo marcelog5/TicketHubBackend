@@ -4,6 +4,9 @@
     {
         protected Entity(Guid id)
         {
+            if (id == Guid.Empty)
+                throw new ArgumentNullException(nameof(Id));
+
             Id = id;
         }
 

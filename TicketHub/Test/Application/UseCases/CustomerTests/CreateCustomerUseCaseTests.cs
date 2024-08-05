@@ -15,13 +15,13 @@ namespace Test.Application.UseCases.CustomerTests
             CreateCustomerInput createInput = new CreateCustomerInput(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cpf("12345678901"));
+                new Cpf("959.021.760-50"));
 
             var customerRepoMock = new Mock<ICustomerRepository>();
             customerRepoMock
                 .Setup(x => x.AlreadyExist(
                     new Email("john.doe@gmail.com"),
-                    new Cpf("12345678901"),
+                    new Cpf("959.021.760-50"),
                     new CancellationToken()))
                 .ReturnsAsync(false);
             customerRepoMock.Setup(x => x.Add(It.IsAny<Customer>(), new CancellationToken()));
@@ -42,7 +42,7 @@ namespace Test.Application.UseCases.CustomerTests
             Assert.NotEqual(Guid.Empty, output.Value.Id);
             Assert.Equal(new Name("John Doe"), output.Value.Name);
             Assert.Equal(new Email("john.doe@gmail.com"), output.Value.Email);
-            Assert.Equal(new Cpf("12345678901"), output.Value.Cpf);
+            Assert.Equal(new Cpf("959.021.760-50"), output.Value.Cpf);
         }
 
         [Fact]
@@ -52,13 +52,13 @@ namespace Test.Application.UseCases.CustomerTests
             CreateCustomerInput createInput = new CreateCustomerInput(
                 new Name("John Doe"),
                 new Email("john.doe@gmail.com"),
-                new Cpf("12345678901"));
+                new Cpf("959.021.760-50"));
 
             var customerRepoMock = new Mock<ICustomerRepository>();
             customerRepoMock
                 .Setup(x => x.AlreadyExist(
                     new Email("john.doe@gmail.com"),
-                    new Cpf("12345678901"),
+                    new Cpf("959.021.760-50"),
                     It.IsAny<CancellationToken>())) // Use It.IsAny<CancellationToken>() para permitir qualquer token de cancelamento
                 .ReturnsAsync(true);
 
